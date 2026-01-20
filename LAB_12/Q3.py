@@ -1,0 +1,30 @@
+
+!pip install gymnasium matplotlib
+
+import gymnasium as gym
+import matplotlib.pyplot as plt
+
+env = gym.make("CartPole-v1", render_mode="rgb_array")
+num_episodes = 20  # example
+scores = []
+
+for episode in range(1, num_episodes + 1):
+    score = 0
+    state, info = env.reset()
+    done = False
+
+    while not done:
+        action = env.action_space.sample()
+        state, reward, terminated, truncated, info = env.step(action)
+        done = terminated or truncated
+        score += reward
+
+    scores.append(score)
+
+    plt.figure(figsize=(6,2))
+    plt.axis('off')  # hide axes
+    plt.text(0.1, 0.5, f"Episode: {episode} | Score: {score}",
+             color='green', fontsize=16)
+    plt.show()
+
+env.close()
